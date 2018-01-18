@@ -1,0 +1,32 @@
+#body {
+    background: lightgray;
+
+}
+#div {
+    position: absolute; /* Абсолютное позиционирование */
+    width: 30%; /* Ширина слоя в процентах */
+    height: 23%; /* Высота слоя в процентах */
+    left: 50%; /* Положение слоя от левого края */
+    top: 50%; /* Положение слоя от верхнего края */
+    margin-left: -15%; /* Отступ слева */
+    margin-top: -15%; /* Отступ сверху */
+    background: lightblue; /* Цвет фона */
+    display: inline;
+    border: 2px solid darkslategray;
+    border-radius: 10px;
+}
+#buttonLogin{
+    background-color: lightgreen;
+    width: 30%;
+    height: 30%;
+    border: 2px solid cadetblue;
+    border-radius: 3px;
+}
+#buttonReg {
+    background-color: cadetblue;
+    color: yellow;
+    width: 30%;
+    height: 20%;
+    border: 2px solid darkslategray;
+    border-radius: 3px;
+}

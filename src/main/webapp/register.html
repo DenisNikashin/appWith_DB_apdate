@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="US-ASCII">
+    <title>Register Page</title>
+    <link rel="stylesheet" type="text/css" href="style/registerPage.css">
+</head>
+    <center>
+        <body id="body" >
+            <div id="div">
+                <h3>Provide all the fields for registration.</h3>
+                    <form action="Register" method="post">
+                        <table>
+                            <tr>
+                                <td><strong>Email ID</strong>:</td>
+                                <td><input type="text" name="email" placeholder="Your email"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Password</strong>:</td>
+                                <td><input type="password" name="password" placeholder="password"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name</strong>:</td>
+                                <td><input type="text" name="name" placeholder="Your name"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Country</strong>:</td>
+                                <td><input type="text" name="country" placeholder="Your country"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <input id="buttonReg" type="submit" value="Register">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <br>
+                    <form action="Login" method="post">
+                        <table width="80%">
+                            <tr>
+                                <td align="center">
+                              If you are registered user, please <button id="buttonLogin" type="submit">Login</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+            </div>
+        </body>
+    </center>
+</html>
