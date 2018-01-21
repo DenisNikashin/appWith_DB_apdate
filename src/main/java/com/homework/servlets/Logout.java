@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Logout extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                                                    throws ServletException, IOException {
         response.setContentType("text/html");
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

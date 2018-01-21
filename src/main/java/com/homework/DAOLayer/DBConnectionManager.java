@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnectionManager {
+public class DBConnectionManager implements AutoCloseable {
     private Connection connection;
 
     public DBConnectionManager(String dbURL, String user, String password)
@@ -15,5 +15,10 @@ public class DBConnectionManager {
 
     public Connection getConnection(){
         return connection;
+    }
+
+    @Override
+    public void close() throws Exception {
+        connection.close();
     }
 }

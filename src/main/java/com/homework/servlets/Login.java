@@ -2,6 +2,7 @@ package com.homework.servlets;
 
 import com.homework.DAOLayer.InteractionWithDB;
 import com.homework.userAccount.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,8 +13,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Login extends HttpServlet {
+
+    private Logger logger = Logger.getLogger(Login.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
                                                         throws ServletException, IOException {
@@ -34,21 +38,25 @@ public class Login extends HttpServlet {
             out.println("<p align=\"center\"><font size=\"20\" color=red>"+errorMsg+"</font></p>");
             requestDispatcher.include(request, response);
         } else {
-            Connection dbConnection = (Connection) getServletContext().getAttribute("DBConnection");
+            try(Connection dbConnection = (Connection) getServletContext().getAttribute("DBConnection")) {
 
-            User currentUser = new InteractionWithDB(dbConnection).checkingTheExistenceOfTheUser(email, password);
+                User currentUser = new InteractionWithDB(dbConnection).checkingTheExistenceOfTheUser(email, password);
 
-            if (currentUser != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("User", currentUser);
-                response.sendRedirect("home.jsp");
-            } else {
-                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.html");
-                PrintWriter out = response.getWriter();
-                out.println("<p align=\"center\"><font size=\"20\" color=red>" +
+                if (currentUser != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("User", currentUser);
+                    response.sendRedirect("home.jsp");
+                } else {
+                    RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.html");
+                    PrintWriter out = response.getWriter();
+                    out.println("<p align=\"center\"><font size=\"20\" color=red>" +
                         "No user found with given email id, please register first." +
                         "</font></p>");
-                requestDispatcher.include(request, response);
+                    requestDispatcher.include(request, response);
+                }
+            } catch (SQLException e) {
+                logger.error("there is no connection with data Base in LoginServlet");
+                e.printStackTrace();
             }
         }
     }

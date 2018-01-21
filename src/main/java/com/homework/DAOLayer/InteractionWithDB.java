@@ -1,6 +1,7 @@
 package com.homework.DAOLayer;
 
 import com.homework.userAccount.User;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class InteractionWithDB implements DAO {
+
+    private Logger logger = Logger.getLogger(InteractionWithDB.class);
 
     private final Connection connection;
 
@@ -22,10 +25,13 @@ public class InteractionWithDB implements DAO {
             preparedStatement.setString(3, userAccount.getCountry());
             preparedStatement.setString(4, userAccount.getPassword());
             preparedStatement.execute();
+            logger.info( " New User - " + userAccount + " registered successfully " );
         } catch (SQLException e) {
+            logger.error("couldn't create a new user ");
             e.printStackTrace();
         }
     }
+
     public User checkingTheExistenceOfTheUser(String email, String password) {
         User userAccount = new User();
         userAccount.setEmail(email);
@@ -41,10 +47,13 @@ public class InteractionWithDB implements DAO {
                                 resultSet.getString("email"),
                                 resultSet.getString("country"),
                                 resultSet.getInt("id"));
+                logger.info("User found with details=" + userAccount);
             } else {
                 userAccount = null;
+                logger.error("User not found with email="+email);
             }
         } catch (SQLException e) {
+            logger.error("failed authenticate the user ");
             e.printStackTrace();
         }
         return userAccount;

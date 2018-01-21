@@ -2,6 +2,7 @@ package com.homework.servlets;
 
 import com.homework.DAOLayer.InteractionWithDB;
 import com.homework.userAccount.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,8 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Register extends HttpServlet {
+
+    private Logger logger = Logger.getLogger(Register.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,15 +46,18 @@ public class Register extends HttpServlet {
             out.println("<p align=\"center\"><font size=\"20\" color=red>"+errorMsg+"</font></p>");
             rd.include(request, response);
         } else {
-            Connection dbConnection = (Connection) getServletContext().getAttribute("DBConnection");
-            new InteractionWithDB(dbConnection).addNewUserDataInDB(userAccount);
+            try (Connection dbConnection = (Connection) getServletContext().getAttribute("DBConnection")) {
 
-            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.html");
-            PrintWriter out= response.getWriter();
-            out.println("<p align=\"center\"><font size=\"15\" color=green>" +
-                    "Registration successful, please login below." +
-                    "</font></p>");
-            requestDispatcher.include(request, response);
+                new InteractionWithDB(dbConnection).addNewUserDataInDB(userAccount);
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/login.html");
+                PrintWriter out= response.getWriter();
+                out.println("<p align=\"center\"><font size=\"15\" color=green>" +
+                        "Registration successful, please login below." +
+                        "</font></p>");
+                requestDispatcher.include(request, response);
+            } catch (SQLException e) {
+                logger.error("there is no connection in RegisterServlet" );
+            }
         }
     }
 }
